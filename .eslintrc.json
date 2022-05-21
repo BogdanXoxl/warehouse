@@ -1,60 +1,56 @@
 {
-    "env": {
-        "browser": true,
-        "es2021": true
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "airbnb-typescript",
+    "eslint-config-airbnb/hooks",
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "plugin:@next/next/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
     },
-    "extends": [
-        "airbnb-typescript",
-        "eslint-config-airbnb/hooks",
-        "eslint:recommended",
-        "plugin:react/recommended",
-        "plugin:@typescript-eslint/recommended",
-        "prettier",
-        "plugin:@next/next/recommended"
+    "project": ["./tsconfig.json"],
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": ["react", "import", "@typescript-eslint", "prettier"],
+  "rules": {
+    "@typescript-eslint/naming-convention": [
+      "error",
+      // Allow camelCase variables (23.2), PascalCase variables (23.8), and UPPER_CASE variables (23.10)
+      {
+        "selector": "variable",
+        "format": ["camelCase", "PascalCase", "snake_case", "UPPER_CASE"]
+      },
+      // Allow camelCase functions (23.2), and PascalCase functions (23.8)
+      {
+        "selector": "function",
+        "format": ["camelCase", "PascalCase"]
+      },
+      // Airbnb recommends PascalCase for classes (23.3), and although Airbnb does not make TypeScript recommendations, we are assuming this rule would similarly apply to anything "type like", including interfaces, type aliases, and enums
+      {
+        "selector": "typeLike",
+        "format": ["PascalCase"]
+      }
     ],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        },
-        "project": ["./tsconfig.json"],
-        "ecmaVersion": "latest",
-        "sourceType": "module"
-    },
-    "plugins": [
-        "react",
-        "import",
-        "@typescript-eslint",
-        "prettier"
-    ],
-    "rules": {
-        "@typescript-eslint/naming-convention": [
-            "error",
-            // Allow camelCase variables (23.2), PascalCase variables (23.8), and UPPER_CASE variables (23.10)
-            {
-                "selector": "variable",
-                "format": ["camelCase", "PascalCase", "snake_case", "UPPER_CASE"]
-            },
-            // Allow camelCase functions (23.2), and PascalCase functions (23.8)
-            {
-                "selector": "function",
-                "format": ["camelCase", "PascalCase"]
-            },
-            // Airbnb recommends PascalCase for classes (23.3), and although Airbnb does not make TypeScript recommendations, we are assuming this rule would similarly apply to anything "type like", including interfaces, type aliases, and enums
-            {
-                "selector": "typeLike",
-                "format": ["PascalCase"]
-            }
-        ],
-        "prettier/prettier": "off",
-        "react/react-in-jsx-scope": "off",
-        "import/no-extraneous-dependencies": "off",
-        "import/prefer-default-export": "off",
-        "react/jsx-props-no-spreading": "off",
-        "react/jsx-no-bind": "off",
-        "react/no-array-index-key": "off",
-        "react/require-default-props": "off",
-        "react/no-danger": "off",
-        "no-console": "off"
-    }
+    "prettier/prettier": "off",
+    "react/react-in-jsx-scope": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/prefer-default-export": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/jsx-no-bind": "off",
+    "react/no-array-index-key": "off",
+    "react/require-default-props": "off",
+    "react/no-danger": "off",
+    "no-console": "off",
+    "@typescript-eslint/no-explicit-any": "off"
+  }
 }
