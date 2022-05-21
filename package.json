@@ -1,0 +1,48 @@
+{
+  "name": "bah_shop",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "next": "12.1.5",
+    "react": "18.0.0",
+    "react-dom": "18.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "17.0.25",
+    "@types/react": "18.0.5",
+    "@types/react-dom": "18.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.20.0",
+    "@typescript-eslint/parser": "^5.20.0",
+    "eslint": "8.13.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-next": "12.1.5",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.29.4",
+    "husky": "^4.3.8",
+    "lint-staged": "^12.3.8",
+    "prettier": "^2.6.2",
+    "pretty-quick": "^3.1.3",
+    "typescript": "4.6.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsc -p tsconfig.json --noEmit && lint-staged",
+      "post-commit": "git update-index --again",
+      "pre-push": "npm run build"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx,scss}": "pretty-quick --staged",
+    "*.{ts,tsx}": "eslint --fix --max-warnings 0"
+  }
+}
