@@ -3,7 +3,7 @@ import type { JWT } from "next-auth/jwt";
 
 import { withAuth } from "next-auth/middleware";
 import { Links, OPEN_URLS } from "../src/settings";
-import { Role } from "../types/roles";
+import { Role } from "@prisma/client";
 
 export default withAuth(
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -16,7 +16,7 @@ export default withAuth(
       if (user.role)
         if (
           !pathname.includes("api") &&
-          (!Links.find((l) => pathname.startsWith(l.to))?.roles.includes(user.role as Role) ||
+          (!Links.find((l) => pathname.startsWith(l.to))?.roles.includes(user.role) ||
             (pathname.includes("/admin") && user.role !== Role.ADMIN))
         )
           return NextResponse.redirect(new URL("/", req.url));

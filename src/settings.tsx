@@ -1,11 +1,11 @@
-import { Role } from "../types/roles";
+import { Role } from "@prisma/client";
 
 export const Links = [
   {
     to: "/profile",
-    icon: <div />,
+    icon: <div>test</div>,
     title: "Профиль",
-    roles: [Role.ADMIN, Role.PREPOD],
+    roles: [Role.ADMIN, Role.USER],
   },
   // {to: '/orders', icon: <BookOutlined />, title: 'Заявки', roles: [Role.STUDENT, Role.ADMIN,  Role.PREPOD]},
   // {to: '/timetable', icon:  <FieldTimeOutlined />, title: 'Расписание', roles: [Role.PREPOD, Role.ADMIN]},
