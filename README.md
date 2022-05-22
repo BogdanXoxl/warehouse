@@ -1,7 +1,7 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## DESIGN 
-https://www.figma.com/file/E63CBBQDp7RGCeKzIwWbfA/Untitled?node-id=3%3A2
+https://www.figma.com/file/fII4FT6gVnch0PcobSQO0U/Untitled
 
 ## Getting Started
 
