@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import prisma from "../../../src/lib/prisma";
 // import confirmPasswordHash from "../../../src/utils/confirmPasswordHash";
 
 export default NextAuth({
