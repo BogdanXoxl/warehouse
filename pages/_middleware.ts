@@ -12,7 +12,7 @@ export default withAuth(
     console.log(req);
     const user = req.nextauth.token?.user;
     const { pathname } = req.nextUrl;
-    console.log(typeof user);
+
     if (user) {
       if (user.role)
         if (
