@@ -27,7 +27,9 @@ export default NextAuth({
               return {
                 emai: user.email,
                 name: user.name,
-                image: user.image,
+                role: user.role,
+                surname: user.surname,
+                carier_start: user.carier_start,
               };
             else throw new Error("Email is not verified!");
           }

@@ -1,17 +1,29 @@
 import { Role } from "@prisma/client";
+// import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
+// import AccountBoxIcon from "@mui/icons-material/AccountBox";
 
-export const Links = [
+type LinkType = {
+  to: string;
+  icon: React.ReactNode;
+  title: string;
+  roles: Role[];
+};
+
+export const Links: LinkType[] = [
   {
     to: "/profile",
     icon: <div>test</div>,
+    // icon: <SupervisedUserCircleIcon />,
     title: "Профиль",
     roles: [Role.ADMIN, Role.USER],
   },
-  // {to: '/orders', icon: <BookOutlined />, title: 'Заявки', roles: [Role.STUDENT, Role.ADMIN,  Role.PREPOD]},
-  // {to: '/timetable', icon:  <FieldTimeOutlined />, title: 'Расписание', roles: [Role.PREPOD, Role.ADMIN]},
-  // {to: '/professors', icon: <ContactsOutlined />, title: 'Преподаватели', roles: [Role.STUDENT, Role.ADMIN]},
-  // {to: '/students', icon: <IdcardOutlined />, title: 'Студенты', roles: [Role.ADMIN]},
-  // {to: '/statistic', icon: <PieChartOutlined />, title: 'Администратору', roles: [Role.ADMIN]},
+  {
+    to: "/register",
+    // icon: <AccountBoxIcon />,
+    icon: <div>test</div>,
+    title: "Добавть сотрудника",
+    roles: [Role.ADMIN],
+  },
 ];
 
 export const USE_QUERY_CONSTS = {
