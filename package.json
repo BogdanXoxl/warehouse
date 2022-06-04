@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@date-io/moment": "^2.14.0",
     "@emotion/cache": "latest",
     "@emotion/react": "latest",
     "@emotion/server": "latest",
@@ -16,16 +17,20 @@
     "@fontsource/roboto": "^4.5.7",
     "@hookform/resolvers": "^2.8.10",
     "@mui/icons-material": "^5.8.0",
+    "@mui/lab": "^5.0.0-alpha.83",
     "@mui/material": "^5.8.1",
     "@next-auth/prisma-adapter": "^1.0.3",
     "@prisma/client": "^3.14.0",
+    "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
     "eslint-config-airbnb-typescript": "^17.0.0",
+    "moment": "^2.29.3",
     "next": "12.1.5",
     "next-auth": "^4.3.4",
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "react-hook-form": "^7.31.2",
+    "react-query": "^3.39.1",
     "yup": "^0.32.11"
   },
   "devDependencies": {

@@ -18,7 +18,7 @@ export const Links: LinkType[] = [
     roles: [Role.ADMIN, Role.USER],
   },
   {
-    to: "/register",
+    to: "/users",
     // icon: <AccountBoxIcon />,
     icon: <div>test</div>,
     title: "Добавть сотрудника",
@@ -29,8 +29,11 @@ export const Links: LinkType[] = [
 export const USE_QUERY_CONSTS = {
   SUBJECTS: "SUBJECTS",
   GROUPS: "GROUPS",
+  USERS: "USERS",
 };
 
 export const OPEN_URLS = ["img"];
 
 export const DATE_FORMAT = "DD.MM.YYYY";
+
+export const DATE_MASK = "__.__.____";
