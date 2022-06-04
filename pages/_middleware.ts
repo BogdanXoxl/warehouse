@@ -19,9 +19,9 @@ export default withAuth(
           (!Links.find((l) => pathname.startsWith(l.to))?.roles.includes(user.role) ||
             (pathname.includes("/admin") && user.role !== Role.ADMIN))
         )
-          return NextResponse.redirect(new URL("/", req.url));
+          return NextResponse.redirect(new URL("/profile", req.url));
 
-      // if (pathname === "/") return NextResponse.redirect(new URL("/profile", req.url));
+      if (pathname === "/") return NextResponse.redirect(new URL("/profile", req.url));
     }
 
     return NextResponse.next();
@@ -31,11 +31,8 @@ export default withAuth(
       signIn: "/login",
     },
     callbacks: {
-      authorized: ({ token, req }) => {
-        // console.log(token, req);
-        // console.log(OPEN_URLS.find(u => req.nextUrl.pathname.includes(u)), !!OPEN_URLS.find(u => req.nextUrl.pathname.includes(u)), req.url)
-        return !!token || !!OPEN_URLS.find((u) => req.nextUrl.pathname.includes(u));
-      },
+      authorized: ({ token, req }) =>
+        !!token || !!OPEN_URLS.find((u) => req.nextUrl.pathname.includes(u)),
     },
   }
 );

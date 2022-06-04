@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "../../../src/lib/prisma";
-// import confirmPasswordHash from "../../../src/utils/confirmPasswordHash";
+import confirmPasswordHash from "../../../src/utils/confirmPasswordHash";
 
 export default NextAuth({
   providers: [
@@ -22,16 +22,18 @@ export default NextAuth({
           });
 
           if (user !== null) {
-            // if (confirmPasswordHash(credentials?.password, user.password))
-            if (user.emailVerified)
-              return {
-                emai: user.email,
-                name: user.name,
-                image: user.image,
-              };
-            else throw new Error("Email is not verified!");
+            if (confirmPasswordHash(credentials?.password, user.password))
+              if (user.emailVerified)
+                return {
+                  emai: user.email,
+                  name: user.name,
+                  role: user.role,
+                  surname: user.surname,
+                  carier_start: user.carierStart,
+                };
+              else throw new Error("Email is not verified!");
           }
-          throw new Error("something went wrong");
+          throw new Error("Something went wrong");
         } catch (err) {
           console.log("Authorize error:", err);
           return null;

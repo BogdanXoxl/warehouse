@@ -12,13 +12,54 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String      @id @default(cuid())
   name          String?
-  email         String?   @unique
+  surname       String?
+  email         String?     @unique
   emailVerified DateTime?
-  image         String?
   password      String
+  carierStart   DateTime    @default(now())
   role          Role
+  timeTable     TimeTable[]
+  Good          Good[]
+  Order         Order[]
+}
+
+model TimeTable {
+  id         String   @id @default(cuid())
+  employee   User     @relation(fields: [employeeId], references: [id])
+  employeeId String
+  range      DateTime
+  executed   Boolean  @default(false)
+}
+
+model Good {
+  id            String          @id @default(cuid())
+  name          String
+  amount        Int?            @default(0)
+  description   String?
+  author        User            @relation(fields: [authorId], references: [id])
+  authorId      String
+  GoodsInOrders GoodsInOrders[]
+}
+
+model Order {
+  id     String   @id @default(cuid())
+  date   DateTime @default(now())
+  user   User     @relation(fields: [userId], references: [id])
+  userId String
+
+  GoodsInOrders GoodsInOrders[]
+}
+
+model GoodsInOrders {
+  order   Order  @relation(fields: [orderId], references: [id])
+  orderId String
+  good    Good   @relation(fields: [goodId], references: [id])
+  goodId  String
+  amount  Int    @default(1)
+
+  @@id([orderId, goodId])
 }
 
 enum Role {
