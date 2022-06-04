@@ -1,19 +1,21 @@
-import * as React from "react";
+import { useState } from "react";
+import { User } from "@prisma/client";
+import { useQuery } from "react-query";
+
 import Box from "@mui/material/Box";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
-import { useQuery } from "react-query";
+import TableContainer from "@mui/material/TableContainer";
+import Table from "@mui/material/Table";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+import TableBody from "@mui/material/TableBody";
+import TablePagination from "@mui/material/TablePagination";
+
 import { USE_QUERY_CONSTS } from "../settings";
 import UserService from "../utils/services/user.service";
-import { User } from "@prisma/client";
 
 interface HeadCell {
   id: keyof Partial<User>;
@@ -40,7 +42,7 @@ const headCells: readonly HeadCell[] = [
 ];
 
 export default function UserList() {
-  const [page, setPage] = React.useState(0);
+  const [page, setPage] = useState<number>(0);
   const { data } = useQuery([USE_QUERY_CONSTS.USERS, page], UserService.getUsers, {
     initialData: [],
   });
@@ -71,7 +73,7 @@ export default function UserList() {
             </TableHead>
             <TableBody>
               {data?.slice(page * 10, page * 10 + 10).map((row) => (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.name}>
+                <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
                   <TableCell component="th" scope="row">{`${row.surname ?? ""} ${
                     row.name
                   }`}</TableCell>

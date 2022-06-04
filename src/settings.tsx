@@ -35,5 +35,3 @@ export const USE_QUERY_CONSTS = {
 export const OPEN_URLS = ["img"];
 
 export const DATE_FORMAT = "DD.MM.YYYY";
-
-export const DATE_MASK = "__.__.____";

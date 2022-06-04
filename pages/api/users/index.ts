@@ -1,9 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import prisma from "../../../src/lib/prisma";
 import { getSession } from "next-auth/react";
 import { Role } from "@prisma/client";
-import { DATE_FORMAT } from "../../../src/settings";
 import moment from "moment";
+
+import prisma from "../../../src/lib/prisma";
+import { DATE_FORMAT } from "../../../src/settings";
 
 const register = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -20,8 +21,6 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
       carierStart: moment(u.carierStart).format(DATE_FORMAT),
       role: u.role,
     }));
-
-    console.dir(data, { depth: Infinity });
 
     res.status(200).json(data);
   } catch (err: any) {
