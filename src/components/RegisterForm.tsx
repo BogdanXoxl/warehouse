@@ -26,7 +26,7 @@ import Checkbox from "@mui/material/Checkbox";
 import UserService from "../utils/services/user.service";
 import { DATE_FORMAT, USE_QUERY_CONSTS } from "../settings";
 import { openSNotification, openWNotification } from "../utils/notification";
-import schema from "../validators/refistration.validator";
+import schema from "../validators/registration.validator";
 
 type InputsType = {
   email: string;
@@ -188,3 +188,4 @@ export default function SignUp() {
     </Box>
   );
 }
+//TODO:: delete Grid

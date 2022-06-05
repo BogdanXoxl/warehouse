@@ -25,7 +25,8 @@ export default NextAuth({
             if (confirmPasswordHash(credentials?.password, user.password))
               if (user.emailVerified)
                 return {
-                  emai: user.email,
+                  id: user.id,
+                  email: user.email,
                   name: user.name,
                   role: user.role,
                   surname: user.surname,

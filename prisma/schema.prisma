@@ -29,8 +29,10 @@ model TimeTable {
   id         String   @id @default(cuid())
   employee   User     @relation(fields: [employeeId], references: [id])
   employeeId String
-  range      DateTime
+  start      DateTime
+  end        DateTime
   executed   Boolean  @default(false)
+  Order      Order[]
 }
 
 model Good {
@@ -44,11 +46,12 @@ model Good {
 }
 
 model Order {
-  id     String   @id @default(cuid())
-  date   DateTime @default(now())
-  user   User     @relation(fields: [userId], references: [id])
-  userId String
-
+  id            String          @id @default(cuid())
+  date          DateTime        @default(now())
+  user          User            @relation(fields: [userId], references: [id])
+  userId        String
+  timeNote      TimeTable       @relation(fields: [timeNoteid], references: [id])
+  timeNoteid    String
   GoodsInOrders GoodsInOrders[]
 }
 

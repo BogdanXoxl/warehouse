@@ -21,13 +21,20 @@ export const Links: LinkType[] = [
     to: "/users",
     // icon: <AccountBoxIcon />,
     icon: <div>test</div>,
-    title: "Добавть сотрудника",
+    title: "Список сотрудников",
+    roles: [Role.ADMIN],
+  },
+  {
+    to: "/products",
+    // icon: <AccountBoxIcon />,
+    icon: <div>test</div>,
+    title: "Список товаров",
     roles: [Role.ADMIN],
   },
 ];
 
 export const USE_QUERY_CONSTS = {
-  SUBJECTS: "SUBJECTS",
+  GOODS: "GOODS",
   GROUPS: "GROUPS",
   USERS: "USERS",
 };
