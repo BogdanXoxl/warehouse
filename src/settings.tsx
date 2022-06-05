@@ -18,16 +18,30 @@ export const Links: LinkType[] = [
     roles: [Role.ADMIN, Role.USER],
   },
   {
+    to: "/orders",
+    // icon: <AccountBoxIcon />,
+    icon: <div>test</div>,
+    title: "Список заказов",
+    roles: [Role.ADMIN, Role.USER],
+  },
+  {
     to: "/users",
     // icon: <AccountBoxIcon />,
     icon: <div>test</div>,
-    title: "Добавть сотрудника",
+    title: "Список сотрудников",
+    roles: [Role.ADMIN],
+  },
+  {
+    to: "/products",
+    // icon: <AccountBoxIcon />,
+    icon: <div>test</div>,
+    title: "Список товаров",
     roles: [Role.ADMIN],
   },
 ];
 
 export const USE_QUERY_CONSTS = {
-  SUBJECTS: "SUBJECTS",
+  GOODS: "GOODS",
   GROUPS: "GROUPS",
   USERS: "USERS",
 };

@@ -22,15 +22,16 @@ model User {
   role          Role
   timeTable     TimeTable[]
   Good          Good[]
-  Order         Order[]
 }
 
 model TimeTable {
   id         String   @id @default(cuid())
   employee   User     @relation(fields: [employeeId], references: [id])
   employeeId String
-  range      DateTime
+  start      DateTime
+  end        DateTime
   executed   Boolean  @default(false)
+  Order      Order[]
 }
 
 model Good {
@@ -38,17 +39,18 @@ model Good {
   name          String
   amount        Int?            @default(0)
   description   String?
+  price         Float           @default(0)
   author        User            @relation(fields: [authorId], references: [id])
   authorId      String
   GoodsInOrders GoodsInOrders[]
 }
 
 model Order {
-  id     String   @id @default(cuid())
-  date   DateTime @default(now())
-  user   User     @relation(fields: [userId], references: [id])
-  userId String
-
+  id            String          @id @default(cuid())
+  date          DateTime        @default(now())
+  summary       Float           @default(0)
+  timeNote      TimeTable       @relation(fields: [timeNoteid], references: [id])
+  timeNoteid    String
   GoodsInOrders GoodsInOrders[]
 }
 

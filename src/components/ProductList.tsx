@@ -1,4 +1,3 @@
-import { User } from "@prisma/client";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Toolbar from "@mui/material/Toolbar";
@@ -11,70 +10,65 @@ import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import TablePagination from "@mui/material/TablePagination";
 
-import CheckIcon from "@mui/icons-material/Check";
-import CloseIcon from "@mui/icons-material/Close";
+import { GoodsWithAuthor } from "../../types/query-types";
 
 interface HeadCell {
-  id: keyof Partial<User>;
+  id: keyof Partial<GoodsWithAuthor>;
   label: string;
 }
 
 const headCells: readonly HeadCell[] = [
   {
     id: "name",
-    label: "Имя",
+    label: "Название",
   },
   {
-    id: "email",
-    label: "Email",
+    id: "amount",
+    label: "Количество",
   },
   {
-    id: "carierStart",
-    label: "Дата начала карьеры",
+    id: "price",
+    label: "Цена",
   },
   {
-    id: "role",
-    label: "Роль",
+    id: "author",
+    label: "Добавил",
   },
 ];
 
 type Props = {
-  data?: (User & { carierStart: string })[];
+  data?: GoodsWithAuthor[];
   page: number;
   handleChangePage: (event: unknown, newPage: number) => void;
 };
 
-export default function UserList({ data, page, handleChangePage }: Props) {
+export default function ProductList({ data, page, handleChangePage }: Props) {
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <Toolbar>
-          <Typography sx={{ flex: "1 1 100%" }} variant="h6" id="tableTitle" component="div">
-            Сотрудники
+          <Typography variant="h6" id="products" component="div">
+            Продукты
           </Typography>
         </Toolbar>
         <TableContainer>
-          <Table aria-labelledby="users">
+          <Table aria-labelledby="products">
             <TableHead>
               <TableRow>
                 {headCells.map((headCell) => (
                   <TableCell key={headCell.id}>{headCell.label}</TableCell>
                 ))}
-                <TableCell align="center">Подтвердил</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {data?.slice(page * 10, page * 10 + 10).map((row) => (
                 <TableRow hover key={row.id}>
-                  <TableCell component="th" scope="row">{`${row.surname ?? ""} ${
-                    row.name
-                  }`}</TableCell>
-                  <TableCell>{row.email}</TableCell>
-                  <TableCell>{row.carierStart}</TableCell>
-                  <TableCell>{row.role}</TableCell>
-                  <TableCell align="center">
-                    {row.emailVerified ? <CheckIcon /> : <CloseIcon />}
+                  <TableCell component="th" scope="row">
+                    {row.name}
                   </TableCell>
+                  <TableCell>{row.amount}</TableCell>
+                  <TableCell>{row.price}</TableCell>
+                  <TableCell>{`${row.author.surname ?? ""} ${row.author.name}`}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

@@ -1,10 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import { Role } from "@prisma/client";
-import moment from "moment";
 
 import prisma from "../../../src/lib/prisma";
-import { DATE_FORMAT } from "../../../src/settings";
 
 const register = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -13,14 +11,19 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method !== "GET" || !session?.user || session.user.role !== Role.ADMIN)
       throw new Error("Method not allowed");
 
-    const data = (await prisma.user.findMany()).map((u) => ({
+    const data = (
+      await prisma.good.findMany({
+        include: {
+          author: true,
+        },
+      })
+    ).map((u) => ({
       id: u.id,
       name: u.name,
-      surname: u.surname,
-      email: u.email,
-      carierStart: moment(u.carierStart).format(DATE_FORMAT),
-      role: u.role,
-      emailVerified: u.emailVerified && moment(u.emailVerified).format(DATE_FORMAT),
+      amount: u.amount,
+      description: u.description,
+      author: u.author,
+      price: u.price,
     }));
 
     res.status(200).json(data);
