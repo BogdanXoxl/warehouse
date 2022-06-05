@@ -7,7 +7,7 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { LoadingButton } from "@mui/lab";
 
-import schema from "../validators/newProduct.validation";
+import schema from "../../validators/newProduct.validation";
 
 export type InputsType = {
   name: string;

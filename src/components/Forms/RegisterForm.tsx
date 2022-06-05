@@ -23,10 +23,10 @@ import FormHelperText from "@mui/material/FormHelperText";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 
-import UserService from "../utils/services/user.service";
-import { DATE_FORMAT, USE_QUERY_CONSTS } from "../settings";
-import { openSNotification, openWNotification } from "../utils/notification";
-import schema from "../validators/registration.validator";
+import UserService from "../../utils/services/user.service";
+import { DATE_FORMAT, USE_QUERY_CONSTS } from "../../settings";
+import { openSNotification, openWNotification } from "../../utils/notification";
+import schema from "../../validators/registration.validator";
 
 type InputsType = {
   email: string;

@@ -4,7 +4,7 @@ import { SubmitHandler } from "react-hook-form";
 import Grid from "@mui/material/Grid";
 
 import Layout from "../src/components/Layout";
-import NewProduct, { InputsType } from "../src/components/NewProduct";
+import NewProduct, { InputsType } from "../src/components/Forms/NewProductForm";
 import ProductList from "../src/components/ProductList";
 
 import { USE_QUERY_CONSTS } from "../src/settings";
@@ -57,5 +57,4 @@ export default function SignUp() {
   );
 }
 
-// TODO:: move queries from components to page
 // TODO:: add "change amount"

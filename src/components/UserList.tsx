@@ -1,7 +1,4 @@
-import { useState } from "react";
 import { User } from "@prisma/client";
-import { useQuery } from "react-query";
-
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Toolbar from "@mui/material/Toolbar";
@@ -16,9 +13,6 @@ import TablePagination from "@mui/material/TablePagination";
 
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
-
-import { USE_QUERY_CONSTS } from "../settings";
-import UserService from "../utils/services/user.service";
 
 interface HeadCell {
   id: keyof Partial<User>;
@@ -44,29 +38,23 @@ const headCells: readonly HeadCell[] = [
   },
 ];
 
-export default function UserList() {
-  const [page, setPage] = useState<number>(0);
-  const { data } = useQuery([USE_QUERY_CONSTS.USERS, page], UserService.getUsers, {
-    initialData: [],
-  });
+type Props = {
+  data?: (User & { carierStart: string })[];
+  page: number;
+  handleChangePage: (event: unknown, newPage: number) => void;
+};
 
-  const handleChangePage = (event: unknown, newPage: number) => setPage(newPage);
-
+export default function UserList({ data, page, handleChangePage }: Props) {
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <Toolbar
-          sx={{
-            pl: { sm: 2 },
-            pr: { xs: 1, sm: 1 },
-          }}
-        >
+        <Toolbar>
           <Typography sx={{ flex: "1 1 100%" }} variant="h6" id="tableTitle" component="div">
             Сотрудники
           </Typography>
         </Toolbar>
         <TableContainer>
-          <Table aria-labelledby="tableTitle">
+          <Table aria-labelledby="users">
             <TableHead>
               <TableRow>
                 {headCells.map((headCell) => (
@@ -77,7 +65,7 @@ export default function UserList() {
             </TableHead>
             <TableBody>
               {data?.slice(page * 10, page * 10 + 10).map((row) => (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                <TableRow hover key={row.id}>
                   <TableCell component="th" scope="row">{`${row.surname ?? ""} ${
                     row.name
                   }`}</TableCell>
