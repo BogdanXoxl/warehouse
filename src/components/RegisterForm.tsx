@@ -3,11 +3,11 @@ import { useMutation, useQueryClient } from "react-query";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Role } from "@prisma/client";
-import moment, { Moment } from "moment";
+import moment from "moment";
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
+import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { DatePicker, LoadingButton } from "@mui/lab";
 
@@ -31,7 +31,7 @@ import schema from "../validators/registration.validator";
 type InputsType = {
   email: string;
   name: string;
-  carierStart: string;
+  carierStart: string | null;
   surname: string;
   password: string;
   isAdmin: boolean;
@@ -66,7 +66,7 @@ export default function SignUp() {
       surname: data.surname,
       email: data.email,
       password: data.password,
-      carierStart: data.carierStart,
+      carierStart: data.carierStart ? moment(data.carierStart).format(DATE_FORMAT) : undefined,
       role: data.isAdmin ? Role.ADMIN : Role.USER,
     });
 
@@ -81,100 +81,103 @@ export default function SignUp() {
       <Typography component="h1" variant="h5">
         Новый пользователь
       </Typography>
-      <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <TextField
-              autoComplete="given-name"
-              required
-              fullWidth
-              id="name"
-              label="Имя"
-              autoFocus
-              {...register("name")}
-              error={!!errors?.name}
-              helperText={errors?.name ? errors?.name?.message : null}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              required
-              fullWidth
-              id="surname"
-              label="Фамилия"
-              autoComplete="family-name"
-              {...register("surname")}
-              error={!!errors?.surname}
-              helperText={errors?.surname ? errors?.surname?.message : null}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              required
-              fullWidth
-              id="email"
-              label="Email"
-              autoComplete="email"
-              {...register("email")}
-              error={!!errors?.email}
-              helperText={errors?.email ? errors?.email?.message : null}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Controller
-              control={control}
-              name="carierStart"
-              render={({ field: { onChange, value }, fieldState: { error } }) => (
-                <DatePicker
-                  onChange={(date?: Moment | null) => onChange(date?.format(DATE_FORMAT) ?? null)}
-                  value={moment(value, DATE_FORMAT)}
-                  label="Дата начала карьеры"
-                  renderInput={(params) => (
-                    <TextField
-                      id="carierStart"
-                      {...params}
-                      error={!!error}
-                      helperText={error?.message}
-                      fullWidth
-                    />
-                  )}
-                />
-              )}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <FormControl variant="outlined" fullWidth required error={!!errors?.password}>
-              <InputLabel htmlFor="password">Пароль</InputLabel>
-              <OutlinedInput
-                {...register("password")}
-                id="password"
-                autoComplete="new-password"
-                type={showPassword ? "text" : "password"}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={() => setShowPassword((prev) => !prev)}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                label="Password"
+      <Box
+        component="form"
+        noValidate
+        onSubmit={handleSubmit(onSubmit)}
+        sx={{ mt: 3, width: "100%" }}
+      >
+        <Stack spacing={2}>
+          <TextField
+            autoComplete="given-name"
+            required
+            fullWidth
+            id="name"
+            label="Имя"
+            autoFocus
+            {...register("name")}
+            error={!!errors?.name}
+            helperText={errors?.name ? errors?.name?.message : null}
+          />
+          <TextField
+            required
+            fullWidth
+            id="surname"
+            label="Фамилия"
+            autoComplete="family-name"
+            {...register("surname")}
+            error={!!errors?.surname}
+            helperText={errors?.surname ? errors?.surname?.message : null}
+          />
+          <TextField
+            required
+            fullWidth
+            id="email"
+            label="Email"
+            autoComplete="email"
+            {...register("email")}
+            error={!!errors?.email}
+            helperText={errors?.email ? errors?.email?.message : null}
+          />
+          <Controller
+            control={control}
+            name="carierStart"
+            defaultValue={null}
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <DatePicker
+                label="Дата начала карьеры"
+                value={value}
+                onChange={(_value) => onChange(_value && moment(_value).format())}
+                renderInput={(params) => (
+                  <TextField
+                    id="carierStart"
+                    autoComplete="off"
+                    {...params}
+                    error={!!error}
+                    helperText={error?.message}
+                    fullWidth
+                  />
+                )}
               />
-              <FormHelperText id="component-error-text">
-                {errors?.password ? errors?.password?.message : null}
-              </FormHelperText>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12}>
-            <FormControlLabel
-              control={<Checkbox {...register("isAdmin")} />}
-              label="Администратор"
+            )}
+          />
+          <FormControl variant="outlined" fullWidth required error={!!errors?.password}>
+            <InputLabel htmlFor="password">Пароль</InputLabel>
+            <OutlinedInput
+              {...register("password")}
+              id="password"
+              autoComplete="new-password"
+              type={showPassword ? "text" : "password"}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Password"
             />
-          </Grid>
-        </Grid>
+            <FormHelperText id="component-error-text">
+              {errors?.password ? errors?.password?.message : null}
+            </FormHelperText>
+          </FormControl>
+          <FormControlLabel
+            label="Администратор"
+            control={
+              <Controller
+                name="isAdmin"
+                control={control}
+                render={({ field: { value, ...field } }) => (
+                  <Checkbox {...field} checked={!!value} />
+                )}
+              />
+            }
+          />
+        </Stack>
         <LoadingButton
           type="submit"
           fullWidth
@@ -188,4 +191,3 @@ export default function SignUp() {
     </Box>
   );
 }
-//TODO:: delete Grid

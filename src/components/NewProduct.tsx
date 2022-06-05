@@ -55,6 +55,9 @@ export default function NewProduct({ onSubmit, isLoading }: Props) {
           <TextField
             required
             fullWidth
+            inputProps={{
+              maxLength: 50,
+            }}
             id="name"
             label="Название"
             autoFocus

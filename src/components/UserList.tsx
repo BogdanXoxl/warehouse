@@ -14,6 +14,9 @@ import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import TablePagination from "@mui/material/TablePagination";
 
+import CheckIcon from "@mui/icons-material/Check";
+import CloseIcon from "@mui/icons-material/Close";
+
 import { USE_QUERY_CONSTS } from "../settings";
 import UserService from "../utils/services/user.service";
 
@@ -69,6 +72,7 @@ export default function UserList() {
                 {headCells.map((headCell) => (
                   <TableCell key={headCell.id}>{headCell.label}</TableCell>
                 ))}
+                <TableCell align="center">Подтвердил</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -80,6 +84,9 @@ export default function UserList() {
                   <TableCell>{row.email}</TableCell>
                   <TableCell>{row.carierStart}</TableCell>
                   <TableCell>{row.role}</TableCell>
+                  <TableCell align="center">
+                    {row.emailVerified ? <CheckIcon /> : <CloseIcon />}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

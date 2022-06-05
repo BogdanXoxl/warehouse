@@ -27,8 +27,12 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
 
     console.dir([data, req.body], { depth: Infinity });
 
-    await prisma.user.create({
-      data,
+    await prisma.user.upsert({
+      where: {
+        email: data.email ?? "",
+      },
+      update: { ...data },
+      create: { ...data },
     });
 
     res.status(200).json("");
