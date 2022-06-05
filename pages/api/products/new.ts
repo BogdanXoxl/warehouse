@@ -15,6 +15,7 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
       name: req.body.name,
       description: req.body.description,
       amount: req.body.amount,
+      price: req.body.price,
       author: {
         connect: {
           id: session.user?.id,

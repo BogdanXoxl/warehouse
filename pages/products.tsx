@@ -35,6 +35,7 @@ export default function SignUp() {
           name: _data.name,
           description: _data.description,
           amount: _data.amount,
+          price: _data.price,
         },
         { onSuccess }
       );

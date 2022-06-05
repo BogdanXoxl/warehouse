@@ -23,6 +23,7 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
       amount: u.amount,
       description: u.description,
       author: u.author,
+      price: u.price,
     }));
 
     res.status(200).json(data);

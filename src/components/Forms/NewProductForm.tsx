@@ -13,6 +13,7 @@ export type InputsType = {
   name: string;
   description?: string;
   amount: number;
+  price: number;
 };
 
 type Props = {
@@ -66,16 +67,29 @@ export default function NewProduct({ onSubmit, isLoading }: Props) {
             helperText={errors?.name ? errors?.name?.message : null}
           />
 
-          <TextField
-            fullWidth
-            type="number"
-            id="amount"
-            label="Количество товара"
-            inputProps={{ min: 0 }}
-            {...register("amount")}
-            error={!!errors?.amount}
-            helperText={errors?.amount ? errors?.amount?.message : null}
-          />
+          <Stack spacing={2} direction="row">
+            <TextField
+              fullWidth
+              type="number"
+              id="amount"
+              label="Цена"
+              inputProps={{ min: 0 }}
+              {...register("price")}
+              error={!!errors?.price}
+              helperText={errors?.price ? errors?.price?.message : null}
+            />
+
+            <TextField
+              fullWidth
+              type="number"
+              id="amount"
+              label="Количество товара"
+              inputProps={{ min: 0, step: "1" }}
+              {...register("amount")}
+              error={!!errors?.amount}
+              helperText={errors?.amount ? errors?.amount?.message : null}
+            />
+          </Stack>
 
           <TextField
             id="description"

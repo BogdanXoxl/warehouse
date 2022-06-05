@@ -13,6 +13,11 @@ const schema = yup
       .default(undefined),
     amount: yup
       .number()
+      .integer("Должно быть целее число!")
+      .transform((value) => (isNaN(value) ? undefined : value))
+      .default(0),
+    price: yup
+      .number()
       .transform((value) => (isNaN(value) ? undefined : value))
       .default(0),
   })

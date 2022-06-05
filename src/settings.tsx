@@ -18,6 +18,13 @@ export const Links: LinkType[] = [
     roles: [Role.ADMIN, Role.USER],
   },
   {
+    to: "/orders",
+    // icon: <AccountBoxIcon />,
+    icon: <div>test</div>,
+    title: "Список заказов",
+    roles: [Role.ADMIN, Role.USER],
+  },
+  {
     to: "/users",
     // icon: <AccountBoxIcon />,
     icon: <div>test</div>,

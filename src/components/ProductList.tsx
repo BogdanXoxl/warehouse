@@ -27,6 +27,10 @@ const headCells: readonly HeadCell[] = [
     label: "Количество",
   },
   {
+    id: "price",
+    label: "Цена",
+  },
+  {
     id: "author",
     label: "Добавил",
   },
@@ -63,6 +67,7 @@ export default function ProductList({ data, page, handleChangePage }: Props) {
                     {row.name}
                   </TableCell>
                   <TableCell>{row.amount}</TableCell>
+                  <TableCell>{row.price}</TableCell>
                   <TableCell>{`${row.author.surname ?? ""} ${row.author.name}`}</TableCell>
                 </TableRow>
               ))}
