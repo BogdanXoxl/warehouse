@@ -19,13 +19,13 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
       surname: req.body.surname,
       email: req.body.email,
       password: await bcrypt.hash(req.body.password, 8),
-      carierStart: req.body.carierStart
-        ? moment(req.body.carierStart, DATE_FORMAT).toDate()
-        : undefined,
+      ...(req.body.carierStart && {
+        carierStart: moment(req.body.carierStart, DATE_FORMAT).toDate(),
+      }),
       role: req.body.role,
     };
 
-    console.dir([data, req.body], { depth: Infinity });
+    console.log("req>> ", req.body, "data>> ", data);
 
     await prisma.user.upsert({
       where: {
@@ -35,7 +35,7 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
       create: { ...data },
     });
 
-    res.status(200).json("");
+    res.status(201).json("");
   } catch (err: any) {
     console.log(err.message);
     res.status(500).json({ statusCode: 500, message: "Something went wrong!" });

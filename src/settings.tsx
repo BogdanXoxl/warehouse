@@ -1,40 +1,24 @@
 import { Role } from "@prisma/client";
-// import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
-// import AccountBoxIcon from "@mui/icons-material/AccountBox";
-
-type LinkType = {
-  to: string;
-  icon: React.ReactNode;
-  title: string;
-  roles: Role[];
-};
+import { LinkType } from "../types/setting-types";
 
 export const Links: LinkType[] = [
   {
-    to: "/profile",
-    icon: <div>test</div>,
-    // icon: <SupervisedUserCircleIcon />,
-    title: "Профиль",
-    roles: [Role.ADMIN, Role.USER],
-  },
-  {
     to: "/orders",
-    // icon: <AccountBoxIcon />,
-    icon: <div>test</div>,
     title: "Список заказов",
     roles: [Role.ADMIN, Role.USER],
   },
   {
+    to: "/timetable",
+    title: "Список смен",
+    roles: [Role.ADMIN, Role.USER],
+  },
+  {
     to: "/users",
-    // icon: <AccountBoxIcon />,
-    icon: <div>test</div>,
     title: "Список сотрудников",
     roles: [Role.ADMIN],
   },
   {
     to: "/products",
-    // icon: <AccountBoxIcon />,
-    icon: <div>test</div>,
     title: "Список товаров",
     roles: [Role.ADMIN],
   },
@@ -42,10 +26,11 @@ export const Links: LinkType[] = [
 
 export const USE_QUERY_CONSTS = {
   GOODS: "GOODS",
-  GROUPS: "GROUPS",
+  TIMETABLE: "TIMETABLE",
   USERS: "USERS",
 };
 
 export const OPEN_URLS = ["img"];
 
 export const DATE_FORMAT = "DD.MM.YYYY";
+export const DATE_TIME_FORMAT = "DD.MM.YYYY HH:mm";

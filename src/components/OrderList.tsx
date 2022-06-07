@@ -25,7 +25,7 @@ function Row({ row }: { row: OrderWithEmployee }) {
     <>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }} hover onClick={() => setOpen(!open)}>
         <TableCell>
-          <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+          <IconButton aria-label="expand row" size="small" onClick={() => setOpen((prev) => !prev)}>
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
@@ -74,11 +74,11 @@ function Row({ row }: { row: OrderWithEmployee }) {
 
 type Props = {
   data?: OrderWithEmployee[];
-  page: number;
-  handleChangePage: (event: unknown, newPage: number) => void;
 };
 
-export default function OrderList({ data, page, handleChangePage }: Props) {
+export default function OrderList({ data }: Props) {
+  const [page, setPage] = useState<number>(0);
+
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
@@ -110,7 +110,7 @@ export default function OrderList({ data, page, handleChangePage }: Props) {
           rowsPerPageOptions={[]}
           rowsPerPage={10}
           page={page}
-          onPageChange={handleChangePage}
+          onPageChange={(_, newPage: number) => setPage(newPage)}
         />
       </Paper>
     </Box>

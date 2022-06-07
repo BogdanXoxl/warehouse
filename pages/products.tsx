@@ -4,14 +4,14 @@ import { SubmitHandler } from "react-hook-form";
 import Grid from "@mui/material/Grid";
 
 import Layout from "../src/components/Layout";
-import NewProduct, { InputsType } from "../src/components/Forms/NewProductForm";
+import NewProductForm, { InputsType } from "../src/components/Forms/NewProductForm";
 import ProductList from "../src/components/ProductList";
 
 import { USE_QUERY_CONSTS } from "../src/settings";
 import ProductService from "../src/utils/services/product.service";
 import { openSNotification, openWNotification } from "../src/utils/notification";
 
-export default function SignUp() {
+export default function Products() {
   const [page, setPage] = useState<number>(0);
   const queryClient = useQueryClient();
 
@@ -48,7 +48,7 @@ export default function SignUp() {
     <Layout>
       <Grid container spacing={2}>
         <Grid item xs={12} md={4} order={{ xs: 1, md: 2 }}>
-          <NewProduct {...{ onSubmit, isLoading }} />
+          <NewProductForm {...{ onSubmit, isLoading }} />
         </Grid>
         <Grid item xs={12} md={8} order={{ xs: 2, md: 1 }}>
           <ProductList {...{ data, page, handleChangePage }} />

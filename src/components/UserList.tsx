@@ -66,9 +66,9 @@ export default function UserList({ data, page, handleChangePage }: Props) {
             <TableBody>
               {data?.slice(page * 10, page * 10 + 10).map((row) => (
                 <TableRow hover key={row.id}>
-                  <TableCell component="th" scope="row">{`${row.surname ?? ""} ${
-                    row.name
-                  }`}</TableCell>
+                  <TableCell component="th" scope="row">
+                    {`${row.surname ?? ""} ${row.name}`}
+                  </TableCell>
                   <TableCell>{row.email}</TableCell>
                   <TableCell>{row.carierStart}</TableCell>
                   <TableCell>{row.role}</TableCell>
