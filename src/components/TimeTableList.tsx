@@ -44,7 +44,7 @@ function Row({ row }: { row: TimeTableWithEmployee }) {
         <TableCell>{row.start}</TableCell>
         <TableCell>{row.end}</TableCell>
         <TableCell component="th" scope="row">
-          {`${row.employee.surname ?? ""} ${row.employee.name}`}
+          {`${row.employee?.surname ?? ""} ${row.employee?.name}`}
         </TableCell>
         <TableCell align="center">{row.executed ? <CheckIcon /> : <CloseIcon />}</TableCell>
       </TableRow>

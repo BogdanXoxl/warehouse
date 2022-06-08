@@ -33,7 +33,7 @@ function Row({ row }: { row: OrderWithEmployee }) {
           {row.date}
         </TableCell>
         <TableCell component="th" scope="row">
-          {`${row.employee.surname ?? ""} ${row.employee.name}`}
+          {`${row.employee?.surname ?? ""} ${row.employee?.name}`}
         </TableCell>
         <TableCell align="right">{row.summary}</TableCell>
       </TableRow>
@@ -53,7 +53,7 @@ function Row({ row }: { row: OrderWithEmployee }) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.goods.map((g) => (
+                  {row.goods?.map((g) => (
                     <TableRow key={g.good.id}>
                       <TableCell component="th" scope="row">
                         {g.good.name}
