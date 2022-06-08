@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import Box from "@mui/material/Box";
-import { signOut } from "next-auth/react";
-import { Links } from "../settings";
 import NextLink from "next/link";
-import { AppBar, Button, Drawer, IconButton, Link, MenuItem, Toolbar } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
 import Head from "next/head";
+import { signOut } from "next-auth/react";
+import { AppBar, Button, Drawer, IconButton, Link, MenuItem, Toolbar, Box } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+
+import { Links } from "../settings";
 
 type Props = {
   title?: string;
