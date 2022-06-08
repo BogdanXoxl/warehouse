@@ -66,7 +66,7 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const data = response.map((u) => ({
       id: u.id,
-      date: moment(u.date).format(DATE_FORMAT),
+      date: moment(u.date).utcOffset(3).format(DATE_FORMAT),
       summary: u.summary,
       employee: u.timeNote.employee,
       goods: u.GoodsInOrders.map((o) => ({

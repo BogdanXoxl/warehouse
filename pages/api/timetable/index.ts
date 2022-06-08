@@ -81,8 +81,8 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const data: TimeTableWithEmployee[] = response.map((u) => ({
       id: u.id,
-      start: moment(u.start).format(DATE_TIME_FORMAT),
-      end: moment(u.end).format(DATE_TIME_FORMAT),
+      start: moment(u.start).utcOffset(3).format(DATE_TIME_FORMAT),
+      end: moment(u.end).utcOffset(3).format(DATE_TIME_FORMAT),
       executed: u.executed,
       orders: u.Order.map((o) => ({
         id: o.id,
