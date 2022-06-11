@@ -1,97 +1,11 @@
-import React from "react";
-import { styled, useTheme, Theme, CSSObject } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import MuiDrawer from "@mui/material/Drawer";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
+import React, { useEffect, useState } from "react";
+import NextLink from "next/link";
+import Head from "next/head";
+import { signOut } from "next-auth/react";
+import { AppBar, Button, Drawer, IconButton, Link, MenuItem, Toolbar, Box } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import Button from "@mui/material/Button";
-import { signOut, useSession } from "next-auth/react";
+
 import { Links } from "../settings";
-import { Role } from "@prisma/client";
-
-import AccountBoxIcon from "@mui/icons-material/AccountBox";
-
-const drawerWidth = 240;
-
-const openedMixin = (theme: Theme): CSSObject => ({
-  width: drawerWidth,
-  transition: theme.transitions.create("width", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
-  }),
-  overflowX: "hidden",
-});
-
-const closedMixin = (theme: Theme): CSSObject => ({
-  transition: theme.transitions.create("width", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  overflowX: "hidden",
-  width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up("sm")]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
-  },
-});
-
-const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "flex-end",
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-}));
-
-interface AppBarProps extends MuiAppBarProps {
-  open?: boolean;
-}
-
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
-})<AppBarProps>(({ theme, open }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(["width", "margin"], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
-
-const Drawer = styled(MuiDrawer, {
-  shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
-  width: drawerWidth,
-  flexShrink: 0,
-  whiteSpace: "nowrap",
-  boxSizing: "border-box",
-  ...(open && {
-    ...openedMixin(theme),
-    "& .MuiDrawer-paper": openedMixin(theme),
-  }),
-  ...(!open && {
-    ...closedMixin(theme),
-    "& .MuiDrawer-paper": closedMixin(theme),
-  }),
-}));
 
 type Props = {
   title?: string;
@@ -99,80 +13,102 @@ type Props = {
 };
 
 const Layout: React.FC<Props> = ({ title, children }) => {
-  const theme = useTheme();
-  const { data: session } = useSession();
-  const [open, setOpen] = React.useState(false);
+  const [state, setState] = useState({
+    mobileView: false,
+    drawerOpen: false,
+  });
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
+  const { mobileView, drawerOpen } = state;
+
+  useEffect(() => {
+    const setResponsiveness = () => {
+      return window.innerWidth < 900
+        ? setState((prevState) => ({ ...prevState, mobileView: true }))
+        : setState((prevState) => ({ ...prevState, mobileView: false }));
+    };
+
+    setResponsiveness();
+
+    window.addEventListener("resize", () => setResponsiveness());
+
+    return () => {
+      window.removeEventListener("resize", () => setResponsiveness());
+    };
+  }, []);
+
+  const getDrawerChoices = () => {
+    return Links.map(({ title: _title, to }) => {
+      return (
+        <NextLink href={to} passHref key={_title}>
+          <Link color="inherit" style={{ textDecoration: "none" }}>
+            <MenuItem>{_title}</MenuItem>
+          </Link>
+        </NextLink>
+      );
+    });
   };
 
-  const handleDrawerClose = () => {
-    setOpen(false);
+  const getMenuButtons = () => {
+    return Links.map(({ title: _title, to }) => {
+      return (
+        <NextLink key={_title} href={to} passHref>
+          <Button color="inherit">{_title}</Button>
+        </NextLink>
+      );
+    });
   };
 
-  console.log("session >>", session);
+  const displayDesktop = () => {
+    return (
+      <Toolbar>
+        <Box sx={{ flexGrow: 1 }}>{getMenuButtons()}</Box>
+        <Button color="inherit" onClick={() => signOut()}>
+          Выйти
+        </Button>
+      </Toolbar>
+    );
+  };
+
+  const displayMobile = () => {
+    const handleDrawerOpen = () => setState((prevState) => ({ ...prevState, drawerOpen: true }));
+    const handleDrawerClose = () => setState((prevState) => ({ ...prevState, drawerOpen: false }));
+
+    return (
+      <Toolbar>
+        <IconButton
+          {...{
+            edge: "start",
+            color: "inherit",
+            "aria-label": "menu",
+            "aria-haspopup": "true",
+            onClick: handleDrawerOpen,
+          }}
+        >
+          <MenuIcon />
+        </IconButton>
+
+        <Drawer
+          {...{
+            anchor: "left",
+            open: drawerOpen,
+            onClose: handleDrawerClose,
+          }}
+        >
+          <div>{getDrawerChoices()}</div>
+        </Drawer>
+      </Toolbar>
+    );
+  };
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{
-              marginRight: 5,
-              ...(open && { display: "none" }),
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            {title}
-          </Typography>
-          <Button color="inherit" onClick={() => signOut()}>
-            Выйти
-          </Button>
-        </Toolbar>
-      </AppBar>
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "rtl" ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-          {session?.user.role &&
-            Links.filter((l) => l.roles.includes(session?.user.role as Role)).map((l) => (
-              <ListItem key={l.to} disablePadding sx={{ display: "block" }}>
-                <ListItemButton
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : "auto",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {/* {l.icon} */}
-                    <AccountBoxIcon />
-                  </ListItemIcon>
-                  <ListItemText sx={{ opacity: open ? 1 : 0 }}>{l.title}</ListItemText>
-                </ListItemButton>
-              </ListItem>
-            ))}
-        </List>
-      </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <Head>
+        <title>{title}</title>
+      </Head>
+      <header>
+        <AppBar position="relative">{mobileView ? displayMobile() : displayDesktop()}</AppBar>
+      </header>
+      <Box component="main" sx={{ p: 3 }}>
         {children}
       </Box>
     </Box>

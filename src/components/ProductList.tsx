@@ -68,7 +68,7 @@ export default function ProductList({ data, page, handleChangePage }: Props) {
                   </TableCell>
                   <TableCell>{row.amount}</TableCell>
                   <TableCell>{row.price}</TableCell>
-                  <TableCell>{`${row.author.surname ?? ""} ${row.author.name}`}</TableCell>
+                  <TableCell>{`${row.author?.surname ?? ""} ${row.author?.name}`}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

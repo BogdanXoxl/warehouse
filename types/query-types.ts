@@ -16,3 +16,12 @@ export type OrderWithEmployee = {
   }[];
   employee: User;
 };
+
+export type TimeTableWithEmployee = {
+  id: string;
+  start: string;
+  end: string;
+  executed: boolean;
+  employee: Pick<User, "name" | "surname">;
+  orders: OrderWithEmployee[];
+};

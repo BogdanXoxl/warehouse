@@ -13,12 +13,23 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method !== "GET" || !session?.user || session.user.role !== Role.ADMIN)
       throw new Error("Method not allowed");
 
-    const data = (await prisma.user.findMany()).map((u) => ({
+    const data = (
+      await prisma.user.findMany({
+        ...(req.query.role && {
+          where: {
+            role: req.query.role as Role,
+            emailVerified: {
+              not: null,
+            },
+          },
+        }),
+      })
+    ).map((u) => ({
       id: u.id,
       name: u.name,
       surname: u.surname,
       email: u.email,
-      carierStart: moment(u.carierStart).format(DATE_FORMAT),
+      carierStart: moment(u.carierStart).utcOffset(3).format(DATE_FORMAT),
       role: u.role,
       emailVerified: u.emailVerified && moment(u.emailVerified).format(DATE_FORMAT),
     }));

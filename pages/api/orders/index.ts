@@ -17,6 +17,9 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
     switch (session.user.role) {
       case Role.USER:
         response = await prisma.order.findMany({
+          orderBy: {
+            date: "desc",
+          },
           where: {
             timeNote: {
               employeeId: {
@@ -40,6 +43,9 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
         break;
       case Role.ADMIN:
         response = await prisma.order.findMany({
+          orderBy: {
+            date: "desc",
+          },
           include: {
             GoodsInOrders: {
               include: {
@@ -60,7 +66,7 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const data = response.map((u) => ({
       id: u.id,
-      date: moment(u.date).format(DATE_FORMAT),
+      date: moment(u.date).utcOffset(3).format(DATE_FORMAT),
       summary: u.summary,
       employee: u.timeNote.employee,
       goods: u.GoodsInOrders.map((o) => ({

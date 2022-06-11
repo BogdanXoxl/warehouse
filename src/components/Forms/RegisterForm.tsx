@@ -37,7 +37,7 @@ type InputsType = {
   isAdmin: boolean;
 };
 
-export default function SignUp() {
+export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const queryClient = useQueryClient();
 

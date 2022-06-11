@@ -3,29 +3,32 @@ import { getSession } from "next-auth/react";
 import { Role, Prisma } from "@prisma/client";
 
 import prisma from "../../../src/lib/prisma";
+import moment from "moment";
 
-const register = async (req: NextApiRequest, res: NextApiResponse) => {
+const NewTimeNote = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const session = await getSession({ req });
 
     if (req.method !== "POST" || !session?.user || session.user.role !== Role.ADMIN)
       throw new Error("Method not allowed");
 
-    const data: Prisma.GoodCreateInput = {
-      name: req.body.name,
-      description: req.body.description,
-      amount: req.body.amount,
-      price: req.body.price,
-      author: {
+    const data: Prisma.TimeTableCreateInput = {
+      ...(req.body.start && {
+        start: moment(req.body.start).toDate(),
+      }),
+      ...(req.body.end && {
+        end: moment(req.body.end).toDate(),
+      }),
+      employee: {
         connect: {
-          id: session.user?.id,
+          id: req.body.employeeId,
         },
       },
     };
 
     console.log("req>> ", req.body, "data>> ", data);
 
-    await prisma.good.create({ data });
+    await prisma.timeTable.create({ data });
 
     res.status(201).json("");
   } catch (err: any) {
@@ -34,4 +37,4 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
-export default register;
+export default NewTimeNote;

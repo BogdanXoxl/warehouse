@@ -21,7 +21,7 @@ type Props = {
   onSubmit: (onSuccess: any) => SubmitHandler<InputsType>;
 };
 
-export default function NewProduct({ onSubmit, isLoading }: Props) {
+export default function NewProductForm({ onSubmit, isLoading }: Props) {
   const {
     register,
     handleSubmit,
