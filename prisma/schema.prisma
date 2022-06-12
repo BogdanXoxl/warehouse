@@ -37,7 +37,7 @@ model TimeTable {
 model Good {
   id            String          @id @default(cuid())
   name          String
-  amount        Int?            @default(0)
+  amount        Int             @default(0)
   description   String?
   price         Float           @default(0)
   author        User            @relation(fields: [authorId], references: [id])

@@ -7,7 +7,7 @@ import { USE_QUERY_CONSTS } from "../src/settings";
 import OrderService from "../src/utils/services/order.service";
 
 export default function Orders() {
-  const { data } = useQuery(USE_QUERY_CONSTS.USERS, OrderService.getOrders, {
+  const { data } = useQuery(USE_QUERY_CONSTS.ORDERS, OrderService.getOrders, {
     initialData: [],
   });
 

@@ -15,7 +15,7 @@ export default function Products() {
   const [page, setPage] = useState<number>(0);
   const queryClient = useQueryClient();
 
-  const { data } = useQuery([USE_QUERY_CONSTS.GOODS, page], ProductService.getProducts, {
+  const { data } = useQuery([USE_QUERY_CONSTS.GOODS, page], () => ProductService.getProducts(), {
     initialData: [],
   });
 

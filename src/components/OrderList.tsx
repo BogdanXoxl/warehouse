@@ -23,11 +23,21 @@ function Row({ row }: { row: OrderWithEmployee }) {
 
   return (
     <>
-      <TableRow sx={{ "& > *": { borderBottom: "unset" } }} hover onClick={() => setOpen(!open)}>
+      <TableRow
+        sx={{ "& > *": { borderBottom: "unset" } }}
+        hover
+        onClick={() => row.goods.length && setOpen(!open)}
+      >
         <TableCell>
-          <IconButton aria-label="expand row" size="small" onClick={() => setOpen((prev) => !prev)}>
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
+          {!!row.goods.length && (
+            <IconButton
+              aria-label="expand row"
+              size="small"
+              onClick={() => setOpen((prev) => !prev)}
+            >
+              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </IconButton>
+          )}
         </TableCell>
         <TableCell component="th" scope="row">
           {row.date}
