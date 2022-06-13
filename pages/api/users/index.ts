@@ -31,7 +31,7 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
       email: u.email,
       carierStart: moment(u.carierStart).utcOffset(3).format(DATE_FORMAT),
       role: u.role,
-      emailVerified: u.emailVerified && moment(u.emailVerified).format(DATE_FORMAT),
+      emailVerified: !u.emailVerified,
     }));
 
     res.status(200).json(data);

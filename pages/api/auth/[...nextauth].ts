@@ -24,7 +24,7 @@ export default NextAuth({
 
           if (user !== null) {
             if (await confirmPasswordHash(credentials?.password, user.password))
-              if (user.emailVerified) {
+              if (!user.emailVerified) {
                 const data: Partial<User & { currentNoteId: string }> = {
                   id: user.id,
                   email: user.email,
