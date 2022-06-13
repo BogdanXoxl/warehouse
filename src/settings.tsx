@@ -36,7 +36,7 @@ export const USE_QUERY_CONSTS = {
   ORDERS: "ORDERS",
 };
 
-export const OPEN_URLS = ["img"];
+export const OPEN_URLS = ["img", "email_verified"];
 
 export const DATE_FORMAT = "DD.MM.YYYY";
 export const DATE_TIME_FORMAT = "DD.MM.YYYY HH:mm";
