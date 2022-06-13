@@ -12,6 +12,36 @@ const NewTimeNote = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method !== "POST" || !session?.user || session.user.role !== Role.ADMIN)
       throw new Error("Method not allowed");
 
+    const check_timetable = await prisma.timeTable.findFirst({
+      where: {
+        OR: [
+          req.body.start && {
+            start: {
+              gte: moment(req.body.start).toDate(),
+              lte: moment(req.body.end).toDate(),
+            },
+          },
+          req.body.end && {
+            end: {
+              gte: moment(req.body.start).toDate(),
+              lte: moment(req.body.end).toDate(),
+            },
+          },
+        ],
+      },
+    });
+
+    console.log(">>", check_timetable);
+
+    if (check_timetable) {
+      throw new Error("Time note already exist!");
+    }
+
+    if (moment(req.body.end).isSameOrBefore(moment(req.body.start))) {
+      //TODO:: don't work
+      throw new Error("Time note is incorrect!");
+    }
+
     const data: Prisma.TimeTableCreateInput = {
       ...(req.body.start && {
         start: moment(req.body.start).toDate(),
