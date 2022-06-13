@@ -11,20 +11,9 @@ const NewTimeNote = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method !== "POST" || !session?.user || session.user.role !== Role.USER)
       throw new Error("Method not allowed");
 
-    const timeNote = await prisma.timeTable.findFirst({
-      // where: {
-      //   start: {
-      //     lte: new Date(),
-      //   },
-      //   end: {
-      //     gt: new Date(),
-      //   },
-      // },
+    const timeNote = await prisma.timeTable.findUnique({
       where: {
-        employeeId: session.user.id,
-        start: {
-          gt: new Date(),
-        },
+        id: session.user.currentNoteId,
       },
     });
 
@@ -53,13 +42,11 @@ const NewTimeNote = async (req: NextApiRequest, res: NextApiResponse) => {
         })
       );
 
-    console.log("goods>> ", goods);
-
     if (!goods.length) {
       throw new Error("Goods not found");
     }
 
-    goods.forEach(async (g) => {
+    for (const g of goods) {
       await prisma.good.update({
         where: {
           id: g.id,
@@ -68,7 +55,7 @@ const NewTimeNote = async (req: NextApiRequest, res: NextApiResponse) => {
           amount: g.amount - g.order_amount,
         },
       });
-    });
+    }
 
     const data: Prisma.OrderCreateInput = {
       summary: goods.reduce((prev, cur) => cur.order_amount * cur.price + prev, 0),
@@ -87,14 +74,15 @@ const NewTimeNote = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     };
 
-    console.log("req>> ", req.body, "data>> ", data);
+    console.log("req>> ", req.body, "data>> ");
+    console.dir(data, { depth: Infinity });
 
     await prisma.order.create({ data });
 
     res.status(201).json("");
   } catch (err: any) {
     console.log(err.message);
-    res.status(500).json({ statusCode: 500, message: "Something went wrong!" });
+    res.status(500).json({ statusCode: 500, message: err.message || "Something went wrong!" });
   }
 };
 
