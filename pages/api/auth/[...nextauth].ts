@@ -36,7 +36,7 @@ export default NextAuth({
                 };
 
                 if (user.role === Role.USER) {
-                  const note = await prisma.timeTable.findFirst({
+                  let note = await prisma.timeTable.findFirst({
                     where: {
                       employeeId: user.id,
                       start: {
@@ -51,6 +51,15 @@ export default NextAuth({
                   if (!note) {
                     throw new Error("No current work");
                   }
+
+                  note = await prisma.timeTable.update({
+                    where: {
+                      id: note.id,
+                    },
+                    data: {
+                      executed: true,
+                    },
+                  });
 
                   data.currentNoteId = note.id;
                 }

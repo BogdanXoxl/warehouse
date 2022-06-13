@@ -18,9 +18,7 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
         ...(req.query.role && {
           where: {
             role: req.query.role as Role,
-            emailVerified: {
-              not: null,
-            },
+            emailVerified: null,
           },
         }),
       })

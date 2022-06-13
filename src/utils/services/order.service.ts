@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 import axios from "axios";
-import { OrderWithEmployee } from "../../../types/query-types";
+import { OrderListRequest } from "../../../types/query-types";
 
 const OrderService = {
   async createOrder(v: Prisma.GoodsInOrdersCreateManyOrderInput[]) {
@@ -8,7 +8,7 @@ const OrderService = {
   },
 
   async getOrders() {
-    return (await axios.get<OrderWithEmployee[]>("/api/orders")).data;
+    return (await axios.get<OrderListRequest>("/api/orders")).data;
   },
 };
 

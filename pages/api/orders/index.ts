@@ -13,6 +13,7 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method !== "GET" || !session?.user) throw new Error("Method not allowed");
 
     let response;
+    let month_profit;
 
     switch (session.user.role) {
       case Role.USER:
@@ -40,6 +41,20 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
             },
           },
         });
+
+        month_profit = await prisma.order.aggregate({
+          where: {
+            timeNote: {
+              employeeId: session.user.id,
+            },
+            date: {
+              gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+            },
+          },
+          _sum: {
+            summary: true,
+          },
+        });
         break;
       case Role.ADMIN:
         response = await prisma.order.findMany({
@@ -59,12 +74,23 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
             },
           },
         });
+
+        month_profit = await prisma.order.aggregate({
+          where: {
+            date: {
+              gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+            },
+          },
+          _sum: {
+            summary: true,
+          },
+        });
         break;
       default:
         throw new Error("Not allowed!");
     }
 
-    const data = response.map((u) => ({
+    const orders = response.map((u) => ({
       id: u.id,
       date: moment(u.date).utcOffset(3).format(DATE_FORMAT),
       summary: u.summary,
@@ -75,7 +101,10 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
       })),
     }));
 
-    res.status(200).json(data);
+    res.status(200).json({
+      orders,
+      month_profit: month_profit._sum.summary ?? 0,
+    });
   } catch (err: any) {
     res.status(500).json({ statusCode: 500, message: err.message });
   }
