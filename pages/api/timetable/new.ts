@@ -14,6 +14,7 @@ const NewTimeNote = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const check_timetable = await prisma.timeTable.findFirst({
       where: {
+        employeeId: req.body.employeeId,
         OR: [
           req.body.start && {
             start: {
@@ -34,10 +35,10 @@ const NewTimeNote = async (req: NextApiRequest, res: NextApiResponse) => {
     console.log(">>", check_timetable);
 
     if (check_timetable) {
-      throw new Error("Time note already exist!");
+      throw new Error("Время уже занято!");
     }
     if (moment(req.body.end).isSameOrBefore(moment(req.body.start), "minute")) {
-      throw new Error("Time note is incorrect!");
+      throw new Error("Некорректная дата!");
     }
 
     const data: Prisma.TimeTableCreateInput = {
@@ -61,7 +62,7 @@ const NewTimeNote = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(201).json("");
   } catch (err: any) {
     console.log(err.message);
-    res.status(500).json({ statusCode: 500, message: "Something went wrong!" });
+    res.status(500).json({ statusCode: 500, message: err.message ?? "Что-то пошло не так!" });
   }
 };
 

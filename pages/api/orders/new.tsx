@@ -18,7 +18,7 @@ const NewTimeNote = async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     if (!timeNote) {
-      throw new Error("Time note not found");
+      throw new Error("Расписание не найдено!");
     }
 
     const goods = await prisma.good
@@ -43,7 +43,7 @@ const NewTimeNote = async (req: NextApiRequest, res: NextApiResponse) => {
       );
 
     if (!goods.length) {
-      throw new Error("Goods not found");
+      throw new Error("Товары не найдены!");
     }
 
     for (const g of goods) {
@@ -82,7 +82,7 @@ const NewTimeNote = async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(201).json("");
   } catch (err: any) {
     console.log(err.message);
-    res.status(500).json({ statusCode: 500, message: err.message || "Something went wrong!" });
+    res.status(500).json({ statusCode: 500, message: err.message || "Что-то пошло не так!" });
   }
 };
 
