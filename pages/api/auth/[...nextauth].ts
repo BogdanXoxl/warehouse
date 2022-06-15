@@ -70,9 +70,10 @@ export default NextAuth({
               }
           }
           throw new Error("Something went wrong");
-        } catch (err) {
-          console.log("Authorize error:", err);
-          return null;
+        } catch (err: any) {
+          console.log("Authorize error:", err.message);
+          // throw new Error(err.message);
+          return Promise.reject(new Error("Authorize error: " + err.message));
         }
       },
     }),
