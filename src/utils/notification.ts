@@ -1,4 +1,8 @@
-export const openSNotification = () => {};
+import { toast } from "react-hot-toast";
+
+export const openSNotification = () => {
+  toast.success("Операция прошла успешно!");
+};
 export const openWNotification = (msg?: string) => {
-  console.log(msg);
+  toast.error(msg ?? "Что-то пошло не так..");
 };

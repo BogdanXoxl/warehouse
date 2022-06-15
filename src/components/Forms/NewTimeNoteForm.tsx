@@ -69,7 +69,7 @@ export default function NewTimeNoteForm({ isLoading, onSubmit }: Props) {
               id="employeeId"
               label="Сотрудник"
               autoComplete="off"
-              disabled={!employees}
+              disabled={!employees?.length}
               error={!!errors?.employeeId}
             >
               {employees?.map((u) => (

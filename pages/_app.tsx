@@ -6,6 +6,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { LocalizationProvider } from "@mui/lab";
 import CssBaseline from "@mui/material/CssBaseline";
 import { SessionProvider } from "next-auth/react";
+import { Toaster } from "react-hot-toast";
 import DateAdapter from "@mui/lab/AdapterMoment";
 import moment from "moment";
 import { ReactQueryDevtools } from "react-query/devtools";
@@ -45,6 +46,7 @@ function MyApp({
             <CssBaseline />
             <SessionProvider session={session}>
               <Component {...pageProps} />
+              <Toaster />
             </SessionProvider>
           </LocalizationProvider>
         </ThemeProvider>

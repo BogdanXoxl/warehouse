@@ -13,6 +13,8 @@ import { signIn, getSession } from "next-auth/react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import LoginSchema from "../src/validators/login.validator";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { openWNotification } from "../src/utils/notification";
+import { useRouter } from "next/router";
 
 type InputsType = {
   email: string;
@@ -33,6 +35,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 };
 
 const LoginPage: NextPage = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -41,7 +44,18 @@ const LoginPage: NextPage = () => {
     resolver: yupResolver(LoginSchema),
   });
 
-  const onSubmit: SubmitHandler<InputsType> = (data) => signIn("credentials", data);
+  const onSubmit: SubmitHandler<InputsType> = async (data) => {
+    const res = await signIn<"credentials">("credentials", {
+      ...data,
+      redirect: false,
+    });
+
+    if (!res?.error) {
+      await router.push("/");
+    } else {
+      openWNotification(res?.error);
+    }
+  };
 
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
