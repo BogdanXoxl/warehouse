@@ -36,9 +36,7 @@ const NewTimeNote = async (req: NextApiRequest, res: NextApiResponse) => {
     if (check_timetable) {
       throw new Error("Time note already exist!");
     }
-
-    if (moment(req.body.end).isSameOrBefore(moment(req.body.start))) {
-      //TODO:: don't work
+    if (moment(req.body.end).isSameOrBefore(moment(req.body.start), "minute")) {
       throw new Error("Time note is incorrect!");
     }
 
