@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import NextLink from "next/link";
 import Head from "next/head";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { AppBar, Button, Drawer, IconButton, Link, MenuItem, Toolbar, Box } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 
@@ -17,6 +17,7 @@ const Layout: React.FC<Props> = ({ title, children }) => {
     mobileView: false,
     drawerOpen: false,
   });
+  const { data: session } = useSession();
 
   const { mobileView, drawerOpen } = state;
 
@@ -37,25 +38,29 @@ const Layout: React.FC<Props> = ({ title, children }) => {
   }, []);
 
   const getDrawerChoices = () => {
-    return Links.map(({ title: _title, to }) => {
-      return (
-        <NextLink href={to} passHref key={_title}>
-          <Link color="inherit" style={{ textDecoration: "none" }}>
-            <MenuItem>{_title}</MenuItem>
-          </Link>
-        </NextLink>
-      );
-    });
+    return Links.filter((l) => session?.user?.role && l.roles.includes(session?.user?.role)).map(
+      ({ title: _title, to }) => {
+        return (
+          <NextLink href={to} passHref key={_title}>
+            <Link color="inherit" style={{ textDecoration: "none" }}>
+              <MenuItem>{_title}</MenuItem>
+            </Link>
+          </NextLink>
+        );
+      }
+    );
   };
 
   const getMenuButtons = () => {
-    return Links.map(({ title: _title, to }) => {
-      return (
-        <NextLink key={_title} href={to} passHref>
-          <Button color="inherit">{_title}</Button>
-        </NextLink>
-      );
-    });
+    return Links.filter((l) => session?.user?.role && l.roles.includes(session?.user?.role)).map(
+      ({ title: _title, to }) => {
+        return (
+          <NextLink key={_title} href={to} passHref>
+            <Button color="inherit">{_title}</Button>
+          </NextLink>
+        );
+      }
+    );
   };
 
   const displayDesktop = () => {

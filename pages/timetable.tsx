@@ -1,5 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { SubmitHandler } from "react-hook-form";
+import { useSession } from "next-auth/react";
+import { Role } from "@prisma/client";
 import Grid from "@mui/material/Grid";
 
 import Layout from "../src/components/Layout";
@@ -11,6 +13,9 @@ import TimeTableService from "../src/utils/services/timetable.service";
 import { openSNotification, openWNotification } from "../src/utils/notification";
 
 export default function TimeTable() {
+  const { data: session } = useSession();
+  const u_role = session?.user.role;
+
   const queryClient = useQueryClient();
 
   const { data } = useQuery(USE_QUERY_CONSTS.TIMETABLE, TimeTableService.getTimeNotes, {
@@ -34,14 +39,18 @@ export default function TimeTable() {
 
   return (
     <Layout>
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={4} order={{ xs: 1, md: 2 }}>
-          <NewTimeNoteForm {...{ onSubmit, isLoading }} />
+      {u_role === Role.ADMIN ? (
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={4} order={{ xs: 1, md: 2 }}>
+            <NewTimeNoteForm {...{ onSubmit, isLoading }} />
+          </Grid>
+          <Grid item xs={12} md={8} order={{ xs: 2, md: 1 }}>
+            <TimeTableList {...{ data }} />
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={8} order={{ xs: 2, md: 1 }}>
-          <TimeTableList {...{ data }} />
-        </Grid>
-      </Grid>
+      ) : (
+        <TimeTableList {...{ data }} />
+      )}
     </Layout>
   );
 }

@@ -14,6 +14,8 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method !== "GET" || !session?.user) throw new Error("Method not allowed");
 
     let response;
+    const date = new Date();
+    date.setHours(0, 0, 0, 0);
 
     switch (session.user.role) {
       case Role.USER:
@@ -22,8 +24,9 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
             start: "asc",
           },
           where: {
+            employeeId: session.user.id,
             start: {
-              gte: new Date(),
+              gte: date,
             },
           },
           include: {

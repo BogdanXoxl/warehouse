@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { Role, User } from "@prisma/client";
 import prisma from "../../../src/lib/prisma";
 import confirmPasswordHash from "../../../src/utils/confirmPasswordHash";
 
@@ -22,17 +23,51 @@ export default NextAuth({
           });
 
           if (user !== null) {
-            if (confirmPasswordHash(credentials?.password, user.password))
-              if (user.emailVerified)
-                return {
+            if (await confirmPasswordHash(credentials?.password, user.password))
+              if (!user.emailVerified) {
+                const data: Partial<User & { currentNoteId: string }> = {
                   id: user.id,
                   email: user.email,
                   name: user.name,
                   role: user.role,
                   surname: user.surname,
-                  carier_start: user.carierStart,
+                  carierStart: user.carierStart,
+                  currentNoteId: undefined,
                 };
-              else throw new Error("Email is not verified!");
+
+                if (user.role === Role.USER) {
+                  let note = await prisma.timeTable.findFirst({
+                    where: {
+                      employeeId: user.id,
+                      start: {
+                        lte: new Date(),
+                      },
+                      end: {
+                        gt: new Date(),
+                      },
+                    },
+                  });
+
+                  if (!note) {
+                    throw new Error("No current work");
+                  }
+
+                  note = await prisma.timeTable.update({
+                    where: {
+                      id: note.id,
+                    },
+                    data: {
+                      executed: true,
+                    },
+                  });
+
+                  data.currentNoteId = note.id;
+                }
+
+                return data;
+              } else {
+                throw new Error("Email is not verified!");
+              }
           }
           throw new Error("Something went wrong");
         } catch (err) {

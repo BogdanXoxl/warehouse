@@ -7,8 +7,10 @@ const ProductService = {
     return (await axios.post("/api/products/new", v)).data;
   },
 
-  async getProducts() {
-    return (await axios.get<GoodsWithAuthor[]>("/api/products")).data;
+  async getProducts(searchValue?: string | null) {
+    return (
+      await axios.get<GoodsWithAuthor[]>("/api/products", { params: { search: searchValue } })
+    ).data;
   },
 };
 

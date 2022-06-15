@@ -16,7 +16,7 @@ model User {
   name          String?
   surname       String?
   email         String?     @unique
-  emailVerified DateTime?
+  emailVerified String?     @unique @default(cuid())
   password      String
   carierStart   DateTime    @default(now())
   role          Role
@@ -37,7 +37,7 @@ model TimeTable {
 model Good {
   id            String          @id @default(cuid())
   name          String
-  amount        Int?            @default(0)
+  amount        Int             @default(0)
   description   String?
   price         Float           @default(0)
   author        User            @relation(fields: [authorId], references: [id])
@@ -47,7 +47,7 @@ model Good {
 
 model Order {
   id            String          @id @default(cuid())
-  date          DateTime        @default(now())
+  date          DateTime        @default(now()) @db.Timestamptz(3)
   summary       Float           @default(0)
   timeNote      TimeTable       @relation(fields: [timeNoteid], references: [id])
   timeNoteid    String

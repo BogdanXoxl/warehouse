@@ -3,6 +3,11 @@ import { LinkType } from "../types/setting-types";
 
 export const Links: LinkType[] = [
   {
+    to: "/new_order",
+    title: "Новый заказ",
+    roles: [Role.USER],
+  },
+  {
     to: "/orders",
     title: "Список заказов",
     roles: [Role.ADMIN, Role.USER],
@@ -28,9 +33,10 @@ export const USE_QUERY_CONSTS = {
   GOODS: "GOODS",
   TIMETABLE: "TIMETABLE",
   USERS: "USERS",
+  ORDERS: "ORDERS",
 };
 
-export const OPEN_URLS = ["img"];
+export const OPEN_URLS = ["img", "email_verified"];
 
 export const DATE_FORMAT = "DD.MM.YYYY";
 export const DATE_TIME_FORMAT = "DD.MM.YYYY HH:mm";

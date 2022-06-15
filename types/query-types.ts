@@ -17,6 +17,11 @@ export type OrderWithEmployee = {
   employee: User;
 };
 
+export type OrderListRequest = {
+  orders: OrderWithEmployee[];
+  month_profit: number;
+};
+
 export type TimeTableWithEmployee = {
   id: string;
   start: string;

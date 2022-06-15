@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
-import { Role } from "@prisma/client";
 
 import prisma from "../../../src/lib/prisma";
 
@@ -8,14 +7,34 @@ const register = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const session = await getSession({ req });
 
-    if (req.method !== "GET" || !session?.user || session.user.role !== Role.ADMIN)
+    if (req.method !== "GET" || !session?.user) {
       throw new Error("Method not allowed");
+    }
 
     const data = (
       await prisma.good.findMany({
         include: {
           author: true,
         },
+        orderBy: {
+          amount: "desc",
+        },
+        ...(req.query.search && {
+          where: {
+            OR: [
+              {
+                name: {
+                  contains: req.query.search as string,
+                },
+              },
+              {
+                description: {
+                  contains: req.query.search as string,
+                },
+              },
+            ],
+          },
+        }),
       })
     ).map((u) => ({
       id: u.id,
