@@ -100,6 +100,16 @@ const Layout: React.FC<Props> = ({ title, children }) => {
           }}
         >
           <div>{getDrawerChoices()}</div>
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            onClick={() => signOut()}
+            sx={{ m: 3 }}
+            disableElevation
+          >
+            Выйти
+          </Button>
         </Drawer>
       </Toolbar>
     );

@@ -49,7 +49,7 @@ export default NextAuth({
                   });
 
                   if (!note) {
-                    throw new Error("No current work");
+                    throw new Error("Нет назанченных смен на сегодня!");
                   }
 
                   note = await prisma.timeTable.update({
@@ -66,14 +66,13 @@ export default NextAuth({
 
                 return data;
               } else {
-                throw new Error("Email is not verified!");
+                throw new Error("Email не подтвержден!");
               }
           }
-          throw new Error("Something went wrong");
+          throw new Error("Не верные данные!");
         } catch (err: any) {
           console.log("Authorize error:", err.message);
-          // throw new Error(err.message);
-          return Promise.reject(new Error("Authorize error: " + err.message));
+          throw err;
         }
       },
     }),

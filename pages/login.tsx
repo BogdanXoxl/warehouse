@@ -50,11 +50,10 @@ const LoginPage: NextPage = () => {
       redirect: false,
     });
 
-    if (res?.ok) {
+    if (!res?.error) {
       await router.push("/");
     } else {
-      openWNotification("Что-то пошло не так...");
-      console.log(res);
+      openWNotification(res?.error);
     }
   };
 
