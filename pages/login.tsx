@@ -89,6 +89,7 @@ const LoginPage: NextPage = () => {
               fullWidth
               id="email"
               label="Email"
+              defaultValue="admin@gmail.com"
               autoComplete="email"
               autoFocus
               {...register("email")}
@@ -102,6 +103,7 @@ const LoginPage: NextPage = () => {
               fullWidth
               label="Пароль"
               type="password"
+              defaultValue="Admin!123"
               id="password"
               autoComplete="current-password"
               {...register("password")}
